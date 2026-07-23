@@ -1,11 +1,39 @@
-"# Directorios de dependencias" 
-"node_modules/" 
-".env" 
-".env.local" 
-".DS_Store" 
-"Thumbs.db" 
-"*.log" 
-"dist/" 
-"build/" 
-".vscode/" 
-".idea/" 
+# Directorios de dependencias
+node_modules/
+vendor/
+
+# Archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+npm-debug.log*
+
+# Directorios de compilación / build
+dist/
+build/
+.vercel/
+.netlify/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Archivos temporales y copias de seguridad
+*DESKTOP-*
+*.tmp
+*.bak
+*.swp
+
+# Archivos de prueba
+test.js
+diagnostic.js
+verify.js
+node

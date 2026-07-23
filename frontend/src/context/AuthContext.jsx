@@ -16,13 +16,25 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
+    const register = async (username, email, password, full_name) => {
+    console.log('📥 Context.register recibió:', { username, email, password, full_name });
+    try {
+        const res = await api.post('/auth/register', { username, email, password, full_name });
+        console.log('📥 Context.register respuesta:', res.data);
+        return res.data;
+    } catch (error) {
+        console.error('📥 Context.register error:', error);
+        throw error; // Re-lanzamos el error para que lo capture el componente
+    }
+};
+
+
     const login = async (email, password) => {
         const res = await api.post('/auth/login', { email, password });
         const { token, user } = res.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
         setUser(user);
-        
         return user;
     };
 
@@ -33,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, register, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
