@@ -18,6 +18,22 @@ Plataforma web de turismo del Gobierno Autónomo Municipal de Quillacollo.
 
 ---
 
+## 🧩 Instalación desde cero (clon o descarga desde GitHub)
+
+1. Instala **Node.js** (con npm) y **XAMPP**.
+2. Clona o descarga el proyecto y descomprímelo.
+3. Haz doble clic en **`iniciar-sistema.bat`**. La primera vez hará todo solo:
+   - Detecta la carpeta del proyecto automáticamente (aunque cambies la ruta).
+   - Instala dependencias de `backend` y `frontend` (`npm install`) si faltan.
+   - Inicia MariaDB.
+   - Crea `backend/.env` a partir de `backend/.env.example` si falta.
+   - Crea la base de datos con sus datos de ejemplo ejecutando `backend/db-init.sql` si no existe.
+4. Se abre el navegador en `http://localhost:5173`.
+
+> ⚠️ Si `iniciar-sistema.bat` no encuentra XAMPP en `C:\xampp`, busca en `C:\Program Files\xampp` y `C:\Program Files (x86)\xampp`. Si usas otra ubicación, edita la variable `XAMPP` al inicio del archivo.
+
+---
+
 ## 🚀 Forma rápida (recomendada)
 
 En la carpeta del proyecto hay **dos archivos** que puedes hacer doble clic:
@@ -37,22 +53,29 @@ http://localhost:5173
 
 Abre **4 terminales** y ejecuta:
 
-### 1) Iniciar la base de datos (MariaDB)
+### 1) Iniciar la base de datos (MariaDB) y crearla
 ```cmd
 C:\xampp\mysql\bin\mysqld.exe --defaults-file=C:\xampp\mysql\bin\my.ini
 ```
 > Alternativa: abre **XAMPP Control Panel** y pulsa **Start** en MySQL.
 
+Si es la primera vez, crea el archivo de configuración y la base de datos:
+```cmd
+cd backend
+copy .env.example .env
+C:\xampp\mysql\bin\mysql.exe -u root < db-init.sql
+```
+
 ### 2) Iniciar el backend (puerto 5000)
 ```cmd
-cd C:\Users\kevin\OneDrive\Desktop\turismo-quillacollo\backend
+cd backend
 npm install   (solo la primera vez)
 npm start
 ```
 
 ### 3) Iniciar el frontend (puerto 5173)
 ```cmd
-cd C:\Users\kevin\OneDrive\Desktop\turismo-quillacollo\frontend
+cd frontend
 npm install   (solo la primera vez)
 npm run dev
 ```
@@ -107,8 +130,9 @@ turismo-quillacollo/
 │   │   ├── controllers/     # auth, admin, uploads
 │   │   └── middlewares/     # autenticación y autorización
 │   ├── uploads/             # Imágenes locales (places, services, activities, logos)
-│   ├── db-init.sql          # Esquema de base de datos
-│   └── .env                 # Puerto 5000 + credenciales de BD
+│   ├── db-init.sql          # Crea TODA la BD (esquema + datos de ejemplo)
+│   ├── .env.example         # Plantilla de configuración (copiar como .env)
+│   └── .env                 # Puerto 5000 + credenciales de BD (no se sube a GitHub)
 └── frontend/                # React + Vite + Tailwind
     ├── src/
     │   ├── pages/           # Home, PlaceDetail, Services, admin/*, etc.
@@ -121,14 +145,19 @@ turismo-quillacollo/
 
 ## 🗄️ Base de datos (`turismo_quillacollo`)
 
-Tablas principales: `users`, `categories`, `places`, `place_images`, `services`,
-`events`, `important_dates`, `reviews`, `settings`.
+Tablas: `users`, `categories`, `places`, `place_images`, `services`,
+`events`, `important_dates`, `reviews`, `settings`, `service_requests`,
+`itineraries`, `site_visits`, `daily_metrics`, `user_events`,
+`push_subscriptions`, `review_helpfulness`.
 
 - Motor/servidor: **MariaDB 10.4** de XAMPP en `localhost:3306`
 - Usuario: `root` · Contraseña: (vacía, sin password)
-- Configuración en `backend/.env`
+- Configuración en `backend/.env` (se crea solo desde `.env.example` la primera vez)
 
-Si necesitas reconstruir la BD desde cero usa `backend/db-init.sql`.
+`backend/db-init.sql` reconstruye la base completa desde cero (estructura +
+lugares, imágenes, servicios, eventos, fechas importantes, usuarios admin/editor
+y reseñas de ejemplo). Se ejecuta automáticamente con `iniciar-sistema.bat` si la
+base no existe.
 
 ---
 

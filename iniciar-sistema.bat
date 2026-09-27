@@ -6,8 +6,14 @@ title Sistema Turismo Quillacollo - INICIO
 REM ============================================================
 REM  CONFIGURACION (edita aqui si cambian las rutas)
 REM ============================================================
-set "PROYECTO=C:\Users\kevin\OneDrive\Desktop\turismo-quillacollo"
+REM La ruta del proyecto se detecta sola (carpeta donde esta este .bat)
+set "PROYECTO=%~dp0"
+if "%PROYECTO:~-1%"=="\" set "PROYECTO=%PROYECTO:~0,-1%"
+
 set "XAMPP=C:\xampp"
+if not exist "%XAMPP%\mysql\bin\mysqld.exe" if exist "%ProgramFiles%\xampp\mysql\bin\mysqld.exe" set "XAMPP=%ProgramFiles%\xampp"
+if not exist "%XAMPP%\mysql\bin\mysqld.exe" if exist "%ProgramFiles(x86)%\xampp\mysql\bin\mysqld.exe" set "XAMPP=%ProgramFiles(x86)%\xampp"
+set "MYSQL=%XAMPP%\mysql\bin\mysql.exe"
 set "RUTA_BACKEND=%PROYECTO%\backend"
 set "RUTA_FRONTEND=%PROYECTO%\frontend"
 set "URL_BACKEND=http://localhost:5000"
@@ -44,8 +50,16 @@ goto dep_backend
 
 :aviso_env
 echo       AVISO: Falta %RUTA_BACKEND%\.env
-echo       El backend puede iniciar, pero el LOGIN fallara
-echo       por falta de JWT_SECRET. Copia el .env de respaldo.
+if not exist "%RUTA_BACKEND%\.env.example" goto err_env
+echo       Creando .env a partir de .env.example (primera vez)...
+copy /y "%RUTA_BACKEND%\.env.example" "%RUTA_BACKEND%\.env" >nul
+echo       Archivo .env creado correctamente.
+goto dep_backend
+
+:err_env
+echo       ERROR: No existe ni .env ni .env.example en %RUTA_BACKEND%
+pause
+exit /b 1
 
 :dep_backend
 if not exist "%RUTA_BACKEND%\node_modules" goto inst_backend
@@ -129,10 +143,24 @@ start "MariaDB Turismo" "%XAMPP%\mysql\bin\mysqld.exe" --defaults-file="%XAMPP%\
 echo       Esperando que MariaDB acepte conexiones...
 call :wait_port 3306 MariaDB 30
 if errorlevel 1 goto err_db_timeout
-goto paso_backend
+goto verificar_db
 
 :db_ya_corre
 echo       MariaDB ya esta corriendo. OK
+
+:verificar_db
+echo       Revisando si la base de datos turismo_quillacollo existe...
+%MYSQL% -u root -N -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='turismo_quillacollo'" > "%TEMP%\tq_tablas.txt" 2>nul
+set /p TABLAS_BT=< "%TEMP%\tq_tablas.txt"
+del "%TEMP%\tq_tablas.txt" >nul 2>&1
+if defined TABLAS_BT if "%TABLAS_BT%" NEQ "0" goto db_ok
+echo       La base de datos no esta inicializada.
+echo       Creando esquema y datos de ejemplo desde backend\db-init.sql...
+%MYSQL% -u root --default-character-set=utf8mb4 < "%RUTA_BACKEND%\db-init.sql" >nul
+if errorlevel 1 goto err_db_init
+echo       Base de datos creada con exito.
+echo       Usuarios de prueba:  admin / Admin123!   y   editor / Editor123!
+:db_ok
 
 :paso_backend
 
@@ -192,6 +220,12 @@ exit /b 1
 
 :err_db_timeout
 echo       ERROR: MariaDB no logro iniciar en 30 segundos.
+pause
+exit /b 1
+
+:err_db_init
+echo       ERROR: No se pudo crear la base de datos.
+echo       Revisa que MariaDB este ejecutandose o la variable XAMPP.
 pause
 exit /b 1
 
