@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+﻿import { createContext, useContext, useEffect, useState } from 'react';
 
 const TextColorContext = createContext();
 
 export const TextColorProvider = ({ children }) => {
-  const [textColor, setTextColor] = useState('#3e2f37');
+  const [textColor, setTextColor] = useState('#0B0B0B');
 
   useEffect(() => {
     const storedColor = localStorage.getItem('textColor');

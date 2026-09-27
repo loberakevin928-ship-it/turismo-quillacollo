@@ -1,4 +1,4 @@
-const SkeletonCard = ({ rows = 3 }) => {
+﻿const SkeletonCard = ({ rows = 3 }) => {
     return (
         <div className="animate-pulse bg-white p-4 rounded-lg shadow-sm border border-gray-100">
             <div className="flex items-center gap-3">

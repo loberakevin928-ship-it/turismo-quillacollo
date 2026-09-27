@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom';
+﻿import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import api from '../api/axios';
+import api, { getImageUrl } from '../api/axios';
+import ReviewForm from '../components/ReviewForm';
 
 // Corregir iconos de Leaflet en Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -46,7 +47,7 @@ const PlaceDetail = () => {
             <p style={{ whiteSpace: 'pre-wrap' }}>{place.description || 'Sin descripción'}</p>
 
             <div style={{ marginTop: '20px' }}>
-                <h3>Calificación promedio: {place.average_rating ? place.average_rating.toFixed(1) : 'Sin calificaciones'} ⭐ ({place.total_reviews} reseñas)</h3>
+                <h3>Calificación promedio: {place.average_rating ? Number(place.average_rating).toFixed(1) : 'Sin calificaciones'} ⭐ ({place.total_reviews} reseñas)</h3>
             </div>
 
             {/* Mini mapa con la ubicación del lugar */}
@@ -72,10 +73,10 @@ const PlaceDetail = () => {
                     <h3>Galería</h3>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                         {place.images.map(img => (
-                            <img 
-                                key={img.id} 
-                                src={img.image_url} 
-                                alt={img.caption || place.name} 
+                            <img
+                                key={img.id}
+                                src={getImageUrl(img.image_url)}
+                                alt={img.caption || place.name}
                                 style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
                             />
                         ))}
@@ -89,7 +90,7 @@ const PlaceDetail = () => {
                 {place.reviews && place.reviews.length > 0 ? (
                     place.reviews.map(review => (
                         <div key={review.id} style={{ borderBottom: '1px solid #eee', padding: '10px 0' }}>
-                            <strong>{review.username}</strong>
+                            <strong>{review.author_name || review.username}</strong>
                             <span style={{ marginLeft: '10px' }}>
                                 {'⭐'.repeat(Math.round(review.rating))}
                             </span>
@@ -100,9 +101,18 @@ const PlaceDetail = () => {
                 ) : (
                     <p>No hay reseñas aún. Sé el primero en dejar una.</p>
                 )}
+
+                <div style={{ marginTop: '20px' }}>
+                    <ReviewForm
+                        placeId={place.id}
+                        onReviewSubmitted={() => {
+                            api.get(`/places/${id}`).then(res => setPlace(res.data)).catch(() => {});
+                        }}
+                    />
+                </div>
             </div>
 
-            <a href="/" style={{ display: 'inline-block', marginTop: '20px', color: '#007bff' }}>← Volver al mapa</a>
+            <Link to="/" style={{ display: 'inline-block', marginTop: '20px', color: '#38BDF8' }}>← Volver al mapa</Link>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 
 const StarRating = ({ rating, onRatingChange, readOnly = false, size = 30 }) => {
     const [hover, setHover] = useState(0);
@@ -20,7 +20,7 @@ const StarRating = ({ rating, onRatingChange, readOnly = false, size = 30 }) => 
                     style={{
                         fontSize: size,
                         cursor: readOnly ? 'default' : 'pointer',
-                        color: star <= (hover || rating) ? '#D4A017' : '#ddd',
+                        color: star <= (hover || rating) ? '#38BDF8' : '#ddd',
                         transition: 'color 0.2s'
                     }}
                 >

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../../api/axios';
+import api, { getImageUrl } from '../../api/axios';
 
 const AdminServices = () => {
     const [services, setServices] = useState([]);
@@ -123,11 +123,11 @@ const AdminServices = () => {
     ];
 
     const categoryColors = {
-        hotel: '#8B4513',
-        restaurant: '#D4A017',
-        artisan: '#2E8B57',
-        tour_guide: '#4A90D9',
-        transportation: '#DC3545'
+        hotel: '#0B0B0B',
+        restaurant: '#38BDF8',
+        artisan: '#BAE6FD',
+        tour_guide: '#38BDF8',
+        transportation: '#0B0B0B'
     };
 
     // Filtros
@@ -147,16 +147,16 @@ const AdminServices = () => {
                 <h1>Directorio de Servicios</h1>
                 <button
                     onClick={openCreateForm}
-                    style={{ padding: '10px 20px', background: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                    style={{ padding: '10px 20px', background: '#38BDF8', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                 >
                     + Nuevo Servicio
                 </button>
             </div>
 
-            {error && <p style={{ color: 'red', background: '#f8d7da', padding: '10px', borderRadius: '4px' }}>{error}</p>}
+            {error && <p style={{ color: '#38BDF8', background: '#F0F0F0', padding: '10px', borderRadius: '4px' }}>{error}</p>}
 
             {/* Filtros y búsqueda */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '20px', background: '#f8f9fa', padding: '15px', borderRadius: '8px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '20px', background: '#FFFFFF', padding: '15px', borderRadius: '8px' }}>
                 <input
                     type="text"
                     placeholder="Buscar servicios..."
@@ -176,7 +176,7 @@ const AdminServices = () => {
                 </select>
                 <button
                     onClick={() => { setSearch(''); setFilterCategory(''); }}
-                    style={{ padding: '10px 20px', background: '#6c757d', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+                    style={{ padding: '10px 20px', background: '#38BDF8', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
                 >
                     Limpiar filtros
                 </button>
@@ -185,11 +185,11 @@ const AdminServices = () => {
             {/* Grid de servicios */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                 {filtered.map(service => (
-                    <div key={service.id} style={{ padding: '15px', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderTop: `4px solid ${categoryColors[service.category] || '#6c757d'}` }}>
+                    <div key={service.id} style={{ padding: '15px', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderTop: `4px solid ${categoryColors[service.category] || '#38BDF8'}` }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                             <h3 style={{ margin: '0 0 5px', color: '#2C2C2C' }}>{service.name}</h3>
                             <span style={{ 
-                                background: categoryColors[service.category] || '#6c757d', 
+                                background: categoryColors[service.category] || '#38BDF8', 
                                 color: '#fff', 
                                 padding: '2px 10px', 
                                 borderRadius: '12px', 
@@ -199,26 +199,26 @@ const AdminServices = () => {
                             </span>
                         </div>
                         {service.logo && (
-                            <img src={service.logo} alt={service.name} style={{ maxWidth: '100%', maxHeight: '60px', objectFit: 'contain', marginBottom: '10px' }} />
+                            <img src={getImageUrl(service.logo)} alt={service.name} style={{ maxWidth: '100%', maxHeight: '60px', objectFit: 'contain', marginBottom: '10px' }} />
                         )}
                         <p style={{ margin: '5px 0', color: '#666', fontSize: '14px' }}>📍 {service.address || 'Sin dirección'}</p>
                         {service.phone && <p style={{ margin: '5px 0', color: '#666', fontSize: '14px' }}>📞 {service.phone}</p>}
                         {service.email && <p style={{ margin: '5px 0', color: '#666', fontSize: '14px' }}>✉️ {service.email}</p>}
                         {service.place_name && (
-                            <p style={{ margin: '5px 0', color: '#8B4513', fontSize: '13px' }}>
+                            <p style={{ margin: '5px 0', color: '#0B0B0B', fontSize: '13px' }}>
                                 🗺️ Lugar asociado: <strong>{service.place_name}</strong>
                             </p>
                         )}
                         <div style={{ marginTop: '10px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             <button
                                 onClick={() => openEditForm(service)}
-                                style={{ padding: '5px 15px', background: '#ffc107', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                style={{ padding: '5px 15px', background: '#7DD3FC', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                             >
                                 Editar
                             </button>
                             <button
                                 onClick={() => handleDelete(service.id)}
-                                style={{ padding: '5px 15px', background: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                style={{ padding: '5px 15px', background: '#0B0B0B', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                             >
                                 Eliminar
                             </button>
@@ -242,7 +242,7 @@ const AdminServices = () => {
                 }}>
                     <div style={{ background: '#fff', padding: '30px', borderRadius: '8px', maxWidth: '600px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
                         <h2>{editingService ? 'Editar Servicio' : 'Nuevo Servicio'}</h2>
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
+                        {error && <p style={{ color: '#38BDF8' }}>{error}</p>}
                         <form onSubmit={handleSubmit}>
                             <div style={{ marginBottom: '15px' }}>
                                 <label>Nombre del Servicio *</label>
@@ -352,13 +352,13 @@ const AdminServices = () => {
                                 <button
                                     type="button"
                                     onClick={() => setShowForm(false)}
-                                    style={{ padding: '10px 20px', background: '#6c757d', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                    style={{ padding: '10px 20px', background: '#38BDF8', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     type="submit"
-                                    style={{ padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                    style={{ padding: '10px 20px', background: '#38BDF8', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                                 >
                                     {editingService ? 'Actualizar' : 'Crear'}
                                 </button>

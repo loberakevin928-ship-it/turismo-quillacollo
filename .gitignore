@@ -6,6 +6,7 @@ vendor/
 .env
 .env.local
 .env.*.local
+backend/.env
 
 # Archivos de sistema
 .DS_Store

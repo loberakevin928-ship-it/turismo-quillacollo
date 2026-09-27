@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net" agent="mozilla" modified="2026-09-09" etag="turismo-uc" version="26.0.0" type="device">
+  <diagram id="diagrama-casos-uso" name="Casos de uso">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ===== ACTORES ===== -->
+        <mxCell id="actVisitante" value="Visitante" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="actEditor" value="Editor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="730" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="actAdmin" value="Administrador" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="180" width="30" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== SISTEMA ===== -->
+        <mxCell id="boundary" value="Sistema de Turismo Quillacollo" style="rounded=0;fillColor=none;strokeColor=#000000;fontStyle=1;fontSize=14;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="60" width="1140" height="870" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CASOS DE USO - VISITANTE ===== -->
+        <mxCell id="cuMapa" value="Visualizar mapa interactivo" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="110" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuBuscar" value="Buscar lugares turísticos" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="190" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuFiltrar" value="Filtrar por categoría" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="270" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuDetalle" value="Ver detalle de lugar" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="350" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuDirServicios" value="Consultar directorio de servicios" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="430" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuMapaServicios" value="Visualizar servicios en mapa" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="510" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuActividades" value="Consultar actividades culturales" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="590" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuRegistrarse" value="Registrarse" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="680" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuIniciarSesion" value="Iniciar sesión" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="760" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuCerrarSesion" value="Cerrar sesión" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="840" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuPassword" value="Solicitar restablecimiento de contraseña" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="470" y="760" width="220" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuCalificar" value="Calificar lugar" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="470" y="110" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuEliminarResena" value="Eliminar su reseña" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="470" y="190" width="180" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CASOS DE USO - EDITOR ===== -->
+        <mxCell id="cuGestionarLugares" value="Gestionar lugares (CRUD)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="110" width="220" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuGestionarEventos" value="Gestionar eventos (CRUD)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="220" width="220" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuGestionarActividades" value="Gestionar actividades culturales (CRUD)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="330" width="220" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuGestionarServicios" value="Gestionar servicios (CRUD)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="440" width="220" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuVerGaleria" value="Ver galería de imágenes" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="550" width="220" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuSubirImagenes" value="Subir imágenes" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="760" y="660" width="220" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CASOS DE USO - ADMINISTRADOR ===== -->
+        <mxCell id="cuGestionarUsuarios" value="Gestionar usuarios (CRUD)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="110" width="240" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuGestionarConfig" value="Gestionar configuración del sistema" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="220" width="240" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuVerReportes" value="Ver reportes y estadísticas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="330" width="240" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cuGestionarLogo" value="Gestionar logo del sitio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="440" width="240" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== ASOCIACIONES VISITANTE ===== -->
+        <mxCell id="e-1" edge="1" parent="1" source="actVisitante" target="cuMapa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-2" edge="1" parent="1" source="actVisitante" target="cuBuscar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-3" edge="1" parent="1" source="actVisitante" target="cuFiltrar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-4" edge="1" parent="1" source="actVisitante" target="cuDetalle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-5" edge="1" parent="1" source="actVisitante" target="cuDirServicios" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-6" edge="1" parent="1" source="actVisitante" target="cuMapaServicios" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-7" edge="1" parent="1" source="actVisitante" target="cuActividades" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-8" edge="1" parent="1" source="actVisitante" target="cuRegistrarse" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-9" edge="1" parent="1" source="actVisitante" target="cuIniciarSesion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-10" edge="1" parent="1" source="actVisitante" target="cuCerrarSesion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-11" edge="1" parent="1" source="actVisitante" target="cuPassword" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-12" edge="1" parent="1" source="actVisitante" target="cuCalificar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-13" edge="1" parent="1" source="actVisitante" target="cuEliminarResena" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== ASOCIACIONES EDITOR ===== -->
+        <mxCell id="f-1" edge="1" parent="1" source="actEditor" target="cuGestionarLugares" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="f-2" edge="1" parent="1" source="actEditor" target="cuGestionarEventos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="f-3" edge="1" parent="1" source="actEditor" target="cuGestionarActividades" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="f-4" edge="1" parent="1" source="actEditor" target="cuGestionarServicios" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="f-5" edge="1" parent="1" source="actEditor" target="cuVerGaleria" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="f-6" edge="1" parent="1" source="actEditor" target="cuSubirImagenes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== ASOCIACIONES ADMINISTRADOR ===== -->
+        <mxCell id="g-1" edge="1" parent="1" source="actAdmin" target="cuGestionarUsuarios" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-2" edge="1" parent="1" source="actAdmin" target="cuGestionarConfig" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-3" edge="1" parent="1" source="actAdmin" target="cuVerReportes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-4" edge="1" parent="1" source="actAdmin" target="cuGestionarLogo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-5" edge="1" parent="1" source="actAdmin" target="cuGestionarLugares" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-6" edge="1" parent="1" source="actAdmin" target="cuGestionarEventos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-7" edge="1" parent="1" source="actAdmin" target="cuGestionarActividades" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-8" edge="1" parent="1" source="actAdmin" target="cuGestionarServicios" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-9" edge="1" parent="1" source="actAdmin" target="cuVerGaleria" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g-10" edge="1" parent="1" source="actAdmin" target="cuSubirImagenes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== INCLUDE / EXTEND ===== -->
+        <mxCell id="inc-1" value="«include»" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;fontSize=12;" edge="1" parent="1" source="cuCalificar" target="cuIniciarSesion">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="ext-1" value="«extend»" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;fontSize=12;" edge="1" parent="1" source="cuBuscar" target="cuMapa">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="ext-2" value="«extend»" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;fontSize=12;" edge="1" parent="1" source="cuFiltrar" target="cuMapa">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

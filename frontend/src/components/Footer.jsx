@@ -1,12 +1,19 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
+import VisitorCounter from './VisitorCounter';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-gray-300 border-t-4 border-secondary">
+    <footer className="bg-gray-900 text-gray-300">
+      {/* Franja de la bandera (celeste y blanco) */}
+      <div className="flex h-2">
+        <span className="flex-1 bg-primary"></span>
+        <span className="flex-[0.5] bg-white"></span>
+        <span className="flex-1 bg-primary"></span>
+      </div>
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Columna 1: Información institucional */}
@@ -74,8 +81,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
-          © {currentYear} Gobierno Autónomo Municipal de Quillacollo. Todos los derechos reservados.
+        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500 flex flex-col md:flex-row items-center justify-center gap-3">
+          <span>© {currentYear} Gobierno Autónomo Municipal de Quillacollo. Todos los derechos reservados.</span>
+          <VisitorCounter />
         </div>
       </div>
     </footer>

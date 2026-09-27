@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Users, MapPin, Calendar, Image, Briefcase, TrendingUp } from 'lucide-react';
+import { Users, MapPin, Calendar, Image, Briefcase, TrendingUp, Eye } from 'lucide-react';
 import api from '../../api/axios';
 
 const DashboardStats = () => {
-    const [stats, setStats] = useState({ totalSites: 0, totalEvents: 0, totalUsers: 0, totalImages: 0, totalServices: 0 });
+    const [stats, setStats] = useState({ totalSites: 0, totalEvents: 0, totalUsers: 0, totalImages: 0, totalServices: 0, totalVisitors: 0, monthlyVisitors: [] });
     const [recent, setRecent] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -21,6 +21,8 @@ const DashboardStats = () => {
                     totalUsers: statsRes.data.totalUsers || 0,
                     totalImages: statsRes.data.totalImages || 0,
                     totalServices: statsRes.data.totalServices || 0,
+                    totalVisitors: statsRes.data.totalVisitors || 0,
+                    monthlyVisitors: statsRes.data.monthlyVisitors || [],
                 });
                 setRecent(recentRes.data || []);
             } catch (error) {
@@ -33,24 +35,22 @@ const DashboardStats = () => {
     }, []);
 
     const cardData = [
-        { title: 'Sitios', value: stats.totalSites, icon: MapPin, color: '#1E3A8A' },
-        { title: 'Eventos', value: stats.totalEvents, icon: Calendar, color: '#D4AF37' },
-        { title: 'Usuarios', value: stats.totalUsers, icon: Users, color: '#22C55E' },
-        { title: 'Galería', value: stats.totalImages, icon: Image, color: '#8B5CF6' },
-        { title: 'Servicios', value: stats.totalServices || 0, icon: Briefcase, color: '#F59E0B' },
+        { title: 'Sitios', value: stats.totalSites, icon: MapPin, color: '#0B0B0B' },
+        { title: 'Visitantes', value: stats.totalVisitors, icon: Eye, color: '#38BDF8' },
+        { title: 'Eventos', value: stats.totalEvents, icon: Calendar, color: '#38BDF8' },
+        { title: 'Usuarios', value: stats.totalUsers, icon: Users, color: '#38BDF8' },
+        { title: 'Galería', value: stats.totalImages, icon: Image, color: '#7DD3FC' },
+        { title: 'Servicios', value: stats.totalServices || 0, icon: Briefcase, color: '#7DD3FC' },
     ];
 
-    // Datos de ejemplo para el gráfico (reemplazar con datos reales si los tienes)
-    const monthlyData = [
-        { month: 'Ene', visits: 400 },
-        { month: 'Feb', visits: 300 },
-        { month: 'Mar', visits: 600 },
-        { month: 'Abr', visits: 800 },
-        { month: 'May', visits: 700 },
-        { month: 'Jun', visits: 900 },
-    ];
+    // Visitantes nuevos por mes (datos reales del backend)
+    const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const monthlyData = (stats.monthlyVisitors || []).map((item) => ({
+        month: monthNames[parseInt(String(item.month).split('-')[1], 10) - 1] || item.month,
+        visits: item.visitors || 0
+    }));
 
-    if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900"></div></div>;
+    if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neutral-900"></div></div>;
 
     return (
         <div className="p-6">
@@ -60,7 +60,7 @@ const DashboardStats = () => {
             </div>
 
             {/* Tarjetas */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
                 {cardData.map((item, idx) => (
                     <div key={idx} className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition">
                         <div className="flex items-center justify-between">
@@ -87,7 +87,7 @@ const DashboardStats = () => {
                             <XAxis dataKey="month" />
                             <YAxis />
                             <Tooltip />
-                            <Bar dataKey="visits" fill="#1E3A8A" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="visits" fill="#0B0B0B" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -100,7 +100,7 @@ const DashboardStats = () => {
                         ) : (
                             recent.slice(0, 5).map((item, idx) => (
                                 <li key={idx} className="flex items-start gap-2 text-sm border-b border-gray-50 pb-2">
-                                    <span className="text-blue-600">•</span>
+                                    <span className="text-sky-600">•</span>
                                     <div>
                                         <p className="text-gray-700">{item.activity}</p>
                                         <p className="text-gray-400 text-xs">{item.user} · {new Date(item.date).toLocaleDateString()}</p>

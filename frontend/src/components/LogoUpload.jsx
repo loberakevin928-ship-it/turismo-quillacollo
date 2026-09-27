@@ -57,7 +57,7 @@ const LogoUpload = () => {
                 style={{ display: 'block', marginBottom: '10px' }}
             />
             {loading && <p>Cargando...</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: '#38BDF8' }}>{error}</p>}
         </div>
     );
 };

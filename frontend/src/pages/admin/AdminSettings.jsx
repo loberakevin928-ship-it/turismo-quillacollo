@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import LogoUpload from '../../components/LogoUpload';
 
 const AdminSettings = () => {
     const [settings, setSettings] = useState({});
@@ -47,7 +48,13 @@ const AdminSettings = () => {
     return (
         <div>
             <h1>Configuración del Sistema</h1>
-            {message && <p style={{ padding: '10px', background: message.includes('✅') ? '#d4edda' : '#f8d7da', borderRadius: '4px' }}>{message}</p>}
+            {message && <p style={{ padding: '10px', background: message.includes('✅') ? '#E0F4FF' : '#F0F0F0', borderRadius: '4px' }}>{message}</p>}
+
+            <div style={{ marginBottom: '25px' }}>
+                <h2 style={{ fontSize: '16px', marginBottom: '10px' }}>Logo del Municipio</h2>
+                <LogoUpload />
+            </div>
+
             <form onSubmit={handleSubmit} style={{ maxWidth: '600px' }}>
                 <div style={{ marginBottom: '15px' }}>
                     <label>Nombre del sitio</label>
@@ -131,7 +138,7 @@ const AdminSettings = () => {
                 <button
                     type="submit"
                     disabled={saving}
-                    style={{ padding: '12px 30px', background: '#8B4513', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                    style={{ padding: '12px 30px', background: '#0B0B0B', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                 >
                     {saving ? 'Guardando...' : 'Guardar Configuración'}
                 </button>

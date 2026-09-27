@@ -40,6 +40,97 @@ const register = async (req, res) => {
     }
 };
 
+// Crear usuario desde el panel de administración (permite asignar rol)
+const adminRegister = async (req, res) => {
+    const { username, email, password, full_name, role } = req.body;
+    const validRoles = ['admin', 'editor', 'user'];
+
+    if (!username || !email || !password) {
+        return res.status(400).json({ error: 'Usuario, email y contraseña son obligatorios' });
+    }
+    if (role && !validRoles.includes(role)) {
+        return res.status(400).json({ error: 'Rol inválido' });
+    }
+
+    try {
+        const [existing] = await pool.query(
+            'SELECT id FROM users WHERE email = ? OR username = ?',
+            [email, username]
+        );
+        if (existing.length > 0) {
+            return res.status(400).json({ error: 'El usuario o email ya están registrados' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const [result] = await pool.query(
+            `INSERT INTO users (username, email, password_hash, full_name, role)
+             VALUES (?, ?, ?, ?, ?)`,
+            [username, email, hashedPassword, full_name || username, role || 'user']
+        );
+
+        res.status(201).json({
+            message: 'Usuario creado exitosamente',
+            userId: result.insertId
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Actualizar un usuario (rol, nombre, estado)
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { full_name, role, is_active } = req.body;
+    const validRoles = ['admin', 'editor', 'user'];
+
+    if (role && !validRoles.includes(role)) {
+        return res.status(400).json({ error: 'Rol inválido' });
+    }
+
+    try {
+        const [rows] = await pool.query('SELECT id FROM users WHERE id = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Evitar que un admin se degrade a sí mismo
+        if (Number(id) === req.user.id && role && role !== 'admin') {
+            return res.status(400).json({ error: 'No puedes cambiar tu propio rol de administrador' });
+        }
+
+        await pool.query(
+            'UPDATE users SET full_name = COALESCE(?, full_name), role = COALESCE(?, role), is_active = COALESCE(?, is_active) WHERE id = ?',
+            [full_name || null, role || null, is_active === undefined ? null : (is_active ? 1 : 0), id]
+        );
+
+        res.json({ message: 'Usuario actualizado' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Eliminar un usuario
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (Number(id) === req.user.id) {
+            return res.status(400).json({ error: 'No puedes eliminar tu propia cuenta' });
+        }
+
+        const [rows] = await pool.query('SELECT id FROM users WHERE id = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        await pool.query('DELETE FROM users WHERE id = ?', [id]);
+        res.json({ message: 'Usuario eliminado' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 // Login de usuario
 const login = async (req, res) => {
     const { email, password } = req.body;
@@ -102,4 +193,4 @@ const getProfile = async (req, res) => {
     }
 };
 
-module.exports = { register, login, getProfile };
+module.exports = { register, adminRegister, updateUser, deleteUser, login, getProfile };

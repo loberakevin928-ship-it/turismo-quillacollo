@@ -44,7 +44,7 @@ const Register = () => {
     return (
         <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
             <h2>Registro</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: '#38BDF8' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '15px' }}>
                     <label>Nombre de usuario</label>
@@ -93,7 +93,7 @@ const Register = () => {
                 <button 
                     type="submit" 
                     disabled={loading}
-                    style={{ width: '100%', padding: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px' }}
+                    style={{ width: '100%', padding: '10px', backgroundColor: '#38BDF8', color: '#fff', border: 'none', borderRadius: '4px' }}
                 >
                     {loading ? 'Cargando...' : 'Registrarse'}
                 </button>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+﻿import { useState, useEffect, useMemo } from 'react';
 import { 
     useReactTable, 
     getCoreRowModel, 
@@ -20,6 +20,8 @@ const AdminUsers = () => {
         username: '', email: '', password: '', full_name: '', role: 'user'
     });
     const [formError, setFormError] = useState('');
+    const [editingUser, setEditingUser] = useState(null);
+    const [editData, setEditData] = useState({ full_name: '', role: 'user', is_active: true });
 
     useEffect(() => {
         fetchUsers();
@@ -34,6 +36,26 @@ const AdminUsers = () => {
             console.error(error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const openEditForm = (user) => {
+        setEditingUser(user);
+        setEditData({
+            full_name: user.full_name || '',
+            role: user.role || 'user',
+            is_active: !!user.is_active
+        });
+    };
+
+    const handleDelete = async (user) => {
+        if (!window.confirm(`¿Seguro que deseas eliminar al usuario "${user.username}"?`)) return;
+        try {
+            await api.delete(`/admin/users/${user.id}`);
+            toast.success('Usuario eliminado');
+            fetchUsers();
+        } catch (err) {
+            toast.error(err.response?.data?.error || 'Error al eliminar usuario');
         }
     };
 
@@ -66,7 +88,7 @@ const AdminUsers = () => {
             header: 'Rol',
             cell: info => {
                 const role = info.getValue();
-                const colors = { admin: 'bg-red-100 text-red-700', editor: 'bg-blue-100 text-blue-700', user: 'bg-gray-100 text-gray-700' };
+                const colors = { admin: 'bg-sky-100 text-neutral-900', editor: 'bg-sky-100 text-neutral-800', user: 'bg-gray-100 text-gray-700' };
                 return <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[role] || colors.user}`}>{role}</span>;
             },
         },
@@ -80,16 +102,24 @@ const AdminUsers = () => {
             header: 'Acciones',
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
-                    <button className="p-1 text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                    <button
+                        onClick={() => openEditForm(row.original)}
+                        className="p-1 text-sky-600 hover:bg-sky-50 rounded-lg transition"
+                        title="Editar"
+                    >
                         <Edit size={16} />
                     </button>
-                    <button className="p-1 text-red-600 hover:bg-red-50 rounded-lg transition">
+                    <button
+                        onClick={() => handleDelete(row.original)}
+                        className="p-1 text-neutral-800 hover:bg-sky-50 rounded-lg transition"
+                        title="Eliminar"
+                    >
                         <Trash2 size={16} />
                     </button>
                 </div>
             ),
         },
-    ], []);
+    ], [handleDelete, openEditForm]);
 
     const table = useReactTable({
         data: users,
@@ -103,6 +133,18 @@ const AdminUsers = () => {
     });
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        try {
+            await api.put(`/admin/users/${editingUser.id}`, editData);
+            toast.success('✅ Usuario actualizado');
+            setEditingUser(null);
+            fetchUsers();
+        } catch (err) {
+            toast.error(err.response?.data?.error || 'Error al actualizar usuario');
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -215,12 +257,52 @@ const AdminUsers = () => {
                 </div>
             </div>
 
+            {/* Modal de edición */}
+            {editingUser && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl">
+                        <h2 className="text-xl font-bold mb-4">Editar: {editingUser.username}</h2>
+                        <form onSubmit={handleUpdate} className="space-y-4">
+                            <input
+                                name="full_name"
+                                placeholder="Nombre completo"
+                                value={editData.full_name}
+                                onChange={(e) => setEditData({ ...editData, full_name: e.target.value })}
+                                className="w-full px-4 py-2 border rounded-lg"
+                            />
+                            <select
+                                name="role"
+                                value={editData.role}
+                                onChange={(e) => setEditData({ ...editData, role: e.target.value })}
+                                className="w-full px-4 py-2 border rounded-lg"
+                            >
+                                <option value="user">Usuario</option>
+                                <option value="editor">Editor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                            <label className="flex items-center gap-2 text-sm text-gray-700">
+                                <input
+                                    type="checkbox"
+                                    checked={editData.is_active}
+                                    onChange={(e) => setEditData({ ...editData, is_active: e.target.checked })}
+                                />
+                                Cuenta activa
+                            </label>
+                            <div className="flex justify-end gap-3 pt-2">
+                                <button type="button" onClick={() => setEditingUser(null)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancelar</button>
+                                <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">Guardar cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             {/* Modal de creación (simplificado, mantén tu lógica) */}
             {showForm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl">
                         <h2 className="text-xl font-bold mb-4">Crear Usuario</h2>
-                        {formError && <div className="bg-red-50 text-red-600 p-2 rounded-lg text-sm mb-4">{formError}</div>}
+                        {formError && <div className="bg-sky-50 text-neutral-800 p-2 rounded-lg text-sm mb-4">{formError}</div>}
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <input name="username" placeholder="Usuario" value={formData.username} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" required />
                             <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" required />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import api from '../../api/axios';
 
@@ -23,13 +23,13 @@ const AdminReports = () => {
     if (loading) return <div>Cargando reportes...</div>;
 
     const stats = [
-        { title: 'Sitios Turísticos', value: data?.totalSites || 0, color: '#8B4513' },
-        { title: 'Usuarios', value: data?.totalUsers || 0, color: '#D4A017' },
-        { title: 'Eventos', value: data?.totalEvents || 0, color: '#2E8B57' },
-        { title: 'Reseñas', value: data?.totalReviews || 0, color: '#4A90D9' }
+        { title: 'Sitios Turísticos', value: data?.totalSites || 0, color: '#0B0B0B' },
+        { title: 'Usuarios', value: data?.totalUsers || 0, color: '#38BDF8' },
+        { title: 'Eventos', value: data?.totalEvents || 0, color: '#BAE6FD' },
+        { title: 'Reseñas', value: data?.totalReviews || 0, color: '#38BDF8' }
     ];
 
-    const COLORS = ['#8B4513', '#D4A017', '#2E8B57', '#4A90D9'];
+    const COLORS = ['#0B0B0B', '#38BDF8', '#BAE6FD', '#38BDF8'];
 
     return (
         <div>
@@ -39,7 +39,7 @@ const AdminReports = () => {
             {/* Tarjetas de estadísticas */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginTop: '20px' }}>
                 {stats.map((stat, index) => (
-                    <div key={index} style={{ padding: '20px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center' }}>
+                    <div key={index} style={{ padding: '20px', background: '#FFFFFF', borderRadius: '8px', textAlign: 'center' }}>
                         <h2 style={{ margin: 0, color: stat.color }}>{stat.value}</h2>
                         <p style={{ margin: '5px 0 0', color: '#666' }}>{stat.title}</p>
                     </div>
@@ -56,7 +56,7 @@ const AdminReports = () => {
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="visits" fill="#8B4513" />
+                            <Bar dataKey="visits" fill="#0B0B0B" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -73,7 +73,7 @@ const AdminReports = () => {
                             cy="50%"
                             labelLine={false}
                             outerRadius={100}
-                            fill="#8884d8"
+                            fill="#38BDF8"
                             dataKey="value"
                             label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                         >

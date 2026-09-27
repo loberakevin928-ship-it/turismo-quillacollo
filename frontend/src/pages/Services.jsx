@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import api from '../api/axios';
+import api, { getImageUrl } from '../api/axios';
 
 // Corregir iconos de Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -21,7 +21,6 @@ const Services = () => {
     const [search, setSearch] = useState('');
     const [filterCategory, setFilterCategory] = useState('');
     const [showMap, setShowMap] = useState(false);
-    const [debugInfo, setDebugInfo] = useState({});
 
     const categories = [
         { value: 'hotel', label: '🏨 Hotel' },
@@ -34,28 +33,11 @@ const Services = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                console.log('🔄 Cargando servicios...');
                 const res = await api.get('/services');
-                console.log('📦 Datos recibidos:', res.data);
-                console.log('📊 Cantidad de servicios:', res.data.length);
-                
-                // Contar cuántos tienen coordenadas
-                const withCoords = res.data.filter(s => s.lat && s.lng);
-                console.log('📍 Servicios con coordenadas:', withCoords.length);
-                
                 setServices(res.data);
                 setFiltered(res.data);
-                setDebugInfo({
-                    total: res.data.length,
-                    withCoords: withCoords.length,
-                    sample: res.data.slice(0, 3)
-                });
-                
-                if (withCoords.length === 0) {
-                    console.warn('⚠️ Ningún servicio tiene coordenadas. Verifica que tengan place_id y que los lugares tengan lat/lng.');
-                }
             } catch (error) {
-                console.error('❌ Error cargando servicios:', error);
+                console.error('Error cargando servicios:', error);
                 setError('Error al cargar los servicios: ' + (error.response?.data?.error || error.message));
             } finally {
                 setLoading(false);
@@ -86,7 +68,7 @@ const Services = () => {
 
     if (error) {
         return (
-            <div style={{ textAlign: 'center', padding: '50px', color: 'red' }}>
+            <div style={{ textAlign: 'center', padding: '50px', color: '#38BDF8' }}>
                 <h3>❌ Error</h3>
                 <p>{error}</p>
                 <p>Revisa que el backend esté corriendo en <code>http://localhost:5000</code></p>
@@ -96,36 +78,37 @@ const Services = () => {
 
     return (
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-            <h1 style={{ color: '#8B4513' }}>🧭 Directorio de Servicios Turísticos</h1>
+            <h1 style={{ color: '#0B0B0B' }}>🧭 Directorio de Servicios Turísticos</h1>
             <p>Encuentra hoteles, restaurantes, artesanos, guías y transporte en Quillacollo</p>
 
-            {/* === PANEL DE DEPURACIÓN === */}
-            <div style={{ background: '#f0f0f0', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #ddd' }}>
-                <h4 style={{ margin: '0 0 10px' }}>🔍 Información de depuración</h4>
-                <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    <li>Total de servicios: <strong>{debugInfo.total || 0}</strong></li>
-                    <li>Servicios con coordenadas (lat/lng): <strong>{debugInfo.withCoords || 0}</strong></li>
-                    <li>Servicios filtrados: <strong>{filtered.length}</strong></li>
-                    <li>Servicios con coordenadas filtrados: <strong>{servicesWithCoords.length}</strong></li>
-                    {servicesWithCoords.length === 0 && (
-                        <li style={{ color: 'red' }}>
-                            ⚠️ <strong>No hay servicios con coordenadas.</strong> 
-                            Asegúrate de que cada servicio tenga un <code>place_id</code> asociado a un lugar que tenga <code>lat</code> y <code>lng</code>.
-                        </li>
-                    )}
-                </ul>
-                {debugInfo.sample && debugInfo.sample.length > 0 && (
-                    <details style={{ marginTop: '10px' }}>
-                        <summary>Ver ejemplo de datos (primeros 3 servicios)</summary>
-                        <pre style={{ background: '#fff', padding: '10px', borderRadius: '4px', overflow: 'auto', fontSize: '12px' }}>
-                            {JSON.stringify(debugInfo.sample, null, 2)}
-                        </pre>
-                    </details>
-                )}
+            {/* CTA: ¿Tienes un negocio? */}
+            <div style={{
+                display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between',
+                gap: '15px', margin: '20px 0', padding: '18px 22px',
+                background: '#0B0B0B', borderRadius: '12px', border: '2px solid #38BDF8'
+            }}>
+                <div>
+                    <p style={{ margin: 0, fontSize: '1.05rem', fontWeight: 'bold', color: '#fff' }}>
+                        ¿Tienes un negocio en Quillacollo?
+                    </p>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.9rem', color: '#BAE6FD' }}>
+                        Solicita que aparezca en el directorio turístico. El equipo lo revisará y decidirá si lo agrega.
+                    </p>
+                </div>
+                <Link
+                    to="/service-request"
+                    style={{
+                        padding: '10px 22px', background: '#38BDF8', color: '#0B0B0B',
+                        borderRadius: '8px', fontWeight: 'bold', textDecoration: 'none',
+                        whiteSpace: 'nowrap'
+                    }}
+                >
+                    📨 Solicitar registro
+                </Link>
             </div>
 
             {/* Filtros */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '20px', background: '#f8f9fa', padding: '15px', borderRadius: '8px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '20px', background: '#FFFFFF', padding: '15px', borderRadius: '8px' }}>
                 <input
                     type="text"
                     placeholder="Buscar servicios..."
@@ -145,13 +128,13 @@ const Services = () => {
                 </select>
                 <button
                     onClick={() => setShowMap(!showMap)}
-                    style={{ padding: '10px 20px', background: '#8B4513', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+                    style={{ padding: '10px 20px', background: '#0B0B0B', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
                 >
                     {showMap ? '🗺️ Ocultar mapa' : '🗺️ Mostrar mapa'}
                 </button>
                 <button
                     onClick={() => { setSearch(''); setFilterCategory(''); }}
-                    style={{ padding: '10px 20px', background: '#6c757d', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+                    style={{ padding: '10px 20px', background: '#38BDF8', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
                 >
                     Limpiar filtros
                 </button>
@@ -168,7 +151,7 @@ const Services = () => {
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center',
-                            background: '#f8f9fa',
+                            background: '#FFFFFF',
                             flexDirection: 'column'
                         }}>
                             <p style={{ fontSize: '1.2rem', color: '#999' }}>🗺️ No hay marcadores para mostrar</p>
@@ -206,12 +189,12 @@ const Services = () => {
                 {filtered.map(service => {
                     const categoryLabel = categories.find(c => c.value === service.category)?.label || service.category;
                     const color = {
-                        hotel: '#8B4513',
-                        restaurant: '#D4A017',
-                        artisan: '#2E8B57',
-                        tour_guide: '#4A90D9',
-                        transportation: '#DC3545'
-                    }[service.category] || '#6c757d';
+                        hotel: '#0B0B0B',
+                        restaurant: '#38BDF8',
+                        artisan: '#BAE6FD',
+                        tour_guide: '#38BDF8',
+                        transportation: '#0B0B0B'
+                    }[service.category] || '#38BDF8';
 
                     return (
                         <div key={service.id} style={{
@@ -222,7 +205,7 @@ const Services = () => {
                             borderTop: `4px solid ${color}`
                         }}>
                             {service.logo && (
-                                <img src={service.logo} alt={service.name} style={{ maxWidth: '100%', maxHeight: '60px', objectFit: 'contain', marginBottom: '10px' }} />
+                                <img src={getImageUrl(service.logo)} alt={service.name} style={{ maxWidth: '100%', maxHeight: '60px', objectFit: 'contain', marginBottom: '10px' }} />
                             )}
                             <h3 style={{ margin: '0 0 5px', color: '#2C2C2C' }}>{service.name}</h3>
                             <p style={{ margin: '5px 0', color: '#666', fontSize: '14px' }}>
@@ -241,21 +224,21 @@ const Services = () => {
                                 }}>
                                     {categoryLabel}
                                 </span>
-                                <span style={{ color: '#D4A017' }}>
+                                <span style={{ color: '#38BDF8' }}>
                                     ⭐ {service.average_rating ? Number(service.average_rating).toFixed(1) : 'Nuevo'}
                                 </span>
                             </div>
                             {service.place_id && (
-                                <Link to={`/place/${service.place_id}`} style={{ display: 'inline-block', marginTop: '10px', color: '#8B4513' }}>
+                                <Link to={`/place/${service.place_id}`} style={{ display: 'inline-block', marginTop: '10px', color: '#0B0B0B' }}>
                                     Ver en el mapa →
                                 </Link>
                             )}
                             {/* Indicador si tiene coordenadas */}
                             <div style={{ marginTop: '8px', fontSize: '12px' }}>
                                 {service.lat && service.lng ? (
-                                    <span style={{ color: 'green' }}>✅ Con ubicación</span>
+                                    <span style={{ color: '#38BDF8' }}>✅ Con ubicación</span>
                                 ) : (
-                                    <span style={{ color: 'red' }}>❌ Sin ubicación</span>
+                                    <span style={{ color: '#7DD3FC' }}>❌ Sin ubicación</span>
                                 )}
                             </div>
                         </div>
@@ -266,7 +249,7 @@ const Services = () => {
             {filtered.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '50px', color: '#999' }}>
                     <p>No se encontraron servicios.</p>
-                    <Link to="/dashboard/services" style={{ color: '#8B4513' }}>Agregar servicios desde el panel de administración →</Link>
+                    <Link to="/dashboard/services" style={{ color: '#0B0B0B' }}>Agregar servicios desde el panel de administración →</Link>
                 </div>
             )}
         </div>

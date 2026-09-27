@@ -1,0 +1,248 @@
+🚀 GUÍA DE INICIO RÁPIDA (PASO A PASO)
+1️⃣ Requisitos previos
+Asegúrate de tener instalado:
+
+Node.js (v18 o superior) → Descargar
+
+MySQL (usamos XAMPP) → Descargar XAMPP
+
+Git (opcional, para clonar) → Descargar Git
+
+2️⃣ Clonar el repositorio (si no lo tienes localmente)
+bash
+git clone https://github.com/loberakevin928-ship-it/turismo-quillacollo.git
+cd turismo-quillacollo
+3️⃣ Configurar la base de datos
+Abrir XAMPP y activar MySQL (y Apache si quieres phpMyAdmin).
+
+Abrir phpMyAdmin (http://localhost/phpmyadmin) y crear una base de datos llamada:
+
+text
+turismo_quillacollo
+con cotejamiento utf8mb4_unicode_ci.
+
+Importar el script SQL que está en backend/db-init.sql (si no existe, usa el script completo que te di). Puedes copiar y pegar el contenido en la pestaña SQL de phpMyAdmin y ejecutarlo.
+
+Si no tienes ese archivo, ejecuta el script completo que incluye todas las tablas (users, places, categories, services, events, important_dates, settings, etc.) y los datos de ejemplo.
+
+4️⃣ Configurar variables de entorno (Backend)
+Dentro de la carpeta backend/, crea un archivo .env con este contenido:
+
+env
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=turismo_quillacollo
+JWT_SECRET=clave_super_secreta_cambiar_en_produccion
+JWT_EXPIRES_IN=7d
+Nota: En XAMPP, DB_PASSWORD queda vacío (sin contraseña). Si tienes contraseña, colócala.
+
+5️⃣ Instalar dependencias
+Backend
+bash
+cd backend
+npm install
+Frontend
+bash
+cd ../frontend
+npm install
+6️⃣ Iniciar el sistema
+🔹 Backend (servidor API)
+bash
+cd backend
+npm run dev   # o node src/index.js
+Deberías ver:
+
+text
+🚀 Servidor en http://localhost:5000
+📡 Health: http://localhost:5000/api/health
+📡 DB test: http://localhost:5000/api/db-test
+📡 Categories: http://localhost:5000/api/categories
+📡 Places: http://localhost:5000/api/places
+📡 Services (público): http://localhost:5000/api/services
+📡 Logo: http://localhost:5000/api/settings/logo
+📡 Important Dates: http://localhost:5000/api/important-dates
+📡 Uploads: http://localhost:5000/api/uploads
+🔹 Frontend (cliente React)
+bash
+cd frontend
+npm run dev
+Verás:
+
+text
+VITE v4.x.x  ready in xxx ms
+➜  Local:   http://localhost:5173/
+7️⃣ Acceder al sistema
+Abre tu navegador en http://localhost:5173
+
+Credenciales por defecto (admin):
+
+Email: admin@quillacollo.gob
+
+Contraseña: Admin123!
+
+8️⃣ Funcionalidades principales
+Módulo	URL
+Página principal (mapa + panel)	/
+Directorio de servicios	/services
+Calendario de eventos	/calendar
+Panel de administración	/dashboard (requiere login)
+Login	/login
+📚 DOCUMENTACIÓN COMPLETA DEL SISTEMA
+1. Objetivo del proyecto
+Desarrollar un sistema web integral para la promoción turística, cultural y religiosa del municipio de Quillacollo (Cochabamba, Bolivia), que centralice información, permita la georreferenciación interactiva de atractivos y facilite la gestión de contenidos por parte del personal municipal.
+
+2. Tecnologías utilizadas
+Capa	Tecnologías
+Frontend	React 18, Vite, Tailwind CSS v3, Leaflet (mapas), React Router v6, Axios, React Hot Toast, Lucide React, Recharts
+Backend	Node.js, Express, MySQL (con mysql2/promise), JWT, Bcryptjs, Multer (subida de archivos)
+Base de datos	MySQL (XAMPP / MariaDB)
+Control de versiones	Git + GitHub
+Entorno	Node.js v18+, npm
+3. Estructura del proyecto
+text
+turismo-quillacollo/
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js                 # Conexión a MySQL (pool)
+│   │   ├── controllers/
+│   │   │   ├── auth.controller.js    # Registro, login, perfil
+│   │   │   ├── admin.controller.js   # CRUD de lugares, eventos, etc.
+│   │   │   └── uploads.controller.js # Subida de imágenes
+│   │   ├── middlewares/
+│   │   │   └── auth.js               # JWT verify y autorización por roles
+│   │   ├── routes/
+│   │   │   ├── auth.routes.js        # /api/auth
+│   │   │   ├── admin.routes.js       # /api/admin (protegido)
+│   │   │   ├── importantDates.routes.js  # /api/important-dates
+│   │   │   └── uploads.routes.js     # /api/uploads
+│   │   └── index.js                  # Punto de entrada principal
+│   ├── uploads/                      # Archivos subidos (logos, imágenes)
+│   ├── .env                          # Variables de entorno
+│   └── package.json
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── axios.js              # Cliente HTTP con interceptor JWT
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Hero.jsx
+│   │   │   ├── AdminLayout.jsx
+│   │   │   ├── Calendar.jsx
+│   │   │   ├── SkeletonCard.jsx
+│   │   │   └── ...
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx       # Estado global de autenticación
+│   │   │   └── LogoContext.jsx       # Carga del logo institucional
+│   │   ├── hooks/
+│   │   │   └── useLogo.js            # Custom hook para logo
+│   │   ├── pages/
+│   │   │   ├── Home.jsx              # Mapa + panel lateral
+│   │   │   ├── Services.jsx          # Directorio de servicios con mapa
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx          # Solo admin
+│   │   │   ├── PlaceDetail.jsx
+│   │   │   └── admin/                # Panel de administración
+│   │   │       ├── DashboardStats.jsx
+│   │   │       ├── AdminSites.jsx
+│   │   │       ├── AdminEvents.jsx
+│   │   │       ├── AdminServices.jsx
+│   │   │       ├── AdminUsers.jsx
+│   │   │       ├── AdminGallery.jsx
+│   │   │       ├── AdminReports.jsx
+│   │   │       └── AdminSettings.jsx
+│   │   ├── index.css                 # Tailwind y variables CSS
+│   │   └── App.jsx                   # Enrutamiento principal
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   └── package.json
+├── database/
+│   └── db-init.sql                   # Script SQL completo (opcional)
+├── .gitignore
+└── README.md
+4. Endpoints principales de la API (Backend)
+Método	Endpoint	Descripción	Autenticación
+GET	/api/health	Health check	Público
+GET	/api/db-test	Prueba conexión MySQL	Público
+POST	/api/auth/login	Iniciar sesión	Público
+POST	/api/auth/admin/register	Registrar usuario (solo admin)	Admin
+GET	/api/categories	Listar categorías	Público
+GET	/api/places	Listar lugares turísticos	Público
+GET	/api/places/:id	Detalle de lugar	Público
+GET	/api/services	Listar servicios (con ubicación)	Público
+GET	/api/settings/logo	Obtener URL del logo	Público
+GET	/api/admin/stats	Estadísticas del dashboard	Admin/Editor
+GET	/api/admin/recent-activity	Actividad reciente	Admin/Editor
+GET	/api/admin/places	CRUD de lugares	Admin/Editor
+GET	/api/admin/events	CRUD de eventos	Admin/Editor
+GET	/api/admin/services	CRUD de servicios	Admin/Editor
+GET	/api/admin/users	Lista de usuarios	Admin
+GET	/api/admin/gallery	Galería de imágenes	Admin/Editor
+PUT	/api/admin/settings	Actualizar configuración	Admin
+5. Roles y permisos
+Admin: Acceso total al panel, puede crear/editar/eliminar cualquier recurso, registrar nuevos usuarios.
+
+Editor: Puede gestionar lugares, eventos, servicios y galería, pero no usuarios ni configuración.
+
+User: Solo puede ver contenido público y dejar reseñas (si se implementa).
+
+6. Manual de usuario básico
+Cliente / Visitante
+Inicio: Mapa con todos los lugares turísticos. Panel lateral con filtros (búsqueda por nombre, categorías, distancia).
+
+Detalle de lugar: Al hacer clic en un marcador o en una tarjeta, se muestra información completa (descripción, horario, dirección, galería, reseñas, mini mapa).
+
+Servicios: Directorio de servicios (hoteles, restaurantes, artesanos, guías, transporte) con filtros y mapa de ubicación.
+
+Calendario: Lista de fechas importantes (feriados, festividades, eventos) con filtros por categoría.
+
+Administrador
+Login: Accede con credenciales.
+
+Dashboard: Resumen con tarjetas de estadísticas (total de sitios, eventos, usuarios, imágenes) y gráfico de visitas mensuales.
+
+Sitios Turísticos: CRUD completo (crear, editar, eliminar). Cada sitio debe tener latitud, longitud y categoría.
+
+Eventos: CRUD de eventos con fecha, ubicación y opción de destacado.
+
+Servicios: CRUD de servicios, cada uno puede asociarse a un lugar turístico (para georreferenciación).
+
+Usuarios: Lista de usuarios registrados, posibilidad de crear nuevos usuarios (solo admin).
+
+Galería: Gestión de imágenes asociadas a los lugares.
+
+Configuración: Edición de datos institucionales (nombre, teléfono, correo, redes sociales).
+
+Reportes: Visualización de estadísticas avanzadas (próximamente con exportación a PDF/Excel).
+
+7. Personalización y marca
+Logo: Se puede subir desde el panel de administración (Configuración).
+
+Colores: Definidos en frontend/tailwind.config.js y en frontend/src/index.css como variables CSS.
+
+Tipografía: Google Fonts (Poppins).
+
+8. Seguridad
+JWT: Todas las rutas del panel de administración están protegidas con middleware authenticate.
+
+Autorización: Middleware authorize para restringir según roles (admin o editor).
+
+Contraseñas: Hasheadas con bcryptjs.
+
+Variables de entorno: JWT_SECRET y credenciales de DB en .env.
+
+9. Próximas mejoras sugeridas
+Sistema de reseñas y calificaciones desde el frontend.
+
+Exportación de reportes a PDF y Excel.
+
+Notificaciones por correo electrónico.
+
+Módulo de reservas de tours.
+
+Internacionalización (inglés/quechua).
+

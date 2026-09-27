@@ -13,6 +13,7 @@ const adminRoutes = require('./routes/admin.routes');
 const authRoutes = require('./routes/auth.routes');
 const importantDatesRoutes = require('./routes/importantDates.routes');
 const uploadsRoutes = require('./routes/uploads.routes');
+const reviewsRoutes = require('./routes/reviews.routes');
 
 dotenv.config();
 
@@ -26,10 +27,12 @@ app.use(helmet({
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com"],
             scriptSrc: ["'self'", "'unsafe-inline'"],
-            imgSrc: ["'self'", "data:", "https:"],
+            imgSrc: ["'self'", "data:", "https:", "http://localhost:5000"],
             connectSrc: ["'self'", "http://localhost:5000", "http://localhost:5173"],
         },
     },
+    crossOriginResourcePolicy: false,
+    crossOriginOpenerPolicy: false,
 }));
 app.use(cors());
 app.use(express.json());
@@ -158,9 +161,9 @@ app.get('/api/places/:id', async (req, res) => {
         );
 
         const [reviews] = await pool.query(`
-            SELECT r.*, u.username, u.avatar_url
+            SELECT r.*, u.username, u.avatar_url, COALESCE(u.username, r.visitor_name) AS author_name
             FROM reviews r
-            JOIN users u ON r.user_id = u.id
+            LEFT JOIN users u ON r.user_id = u.id
             WHERE r.place_id = ?
             ORDER BY r.created_at DESC
             LIMIT 10
@@ -240,11 +243,136 @@ app.post('/api/admin/upload-logo', authenticate, authorize('admin'), upload.sing
     }
 });
 
+// ===== CONTADOR DE VISITAS (público) =====
+app.post('/api/visits/track', async (req, res) => {
+    const { visitorId } = req.body;
+    if (!visitorId || typeof visitorId !== 'string') {
+        return res.status(400).json({ error: 'visitorId requerido' });
+    }
+    try {
+        const [existing] = await pool.query(
+            `SELECT id, DATE(last_visit_at) = CURDATE() AS is_today
+             FROM site_visits WHERE visitor_id = ?`,
+            [visitorId]
+        );
+        let newVisitor = 0;
+        if (existing.length === 0) {
+            await pool.query(
+                'INSERT INTO site_visits (visitor_id, visit_count) VALUES (?, 1)',
+                [visitorId]
+            );
+            newVisitor = 1;
+        } else {
+            const isToday = existing[0].is_today === 1 || existing[0].is_today === true;
+            await pool.query(
+                'UPDATE site_visits SET last_visit_at = NOW(), visit_count = visit_count + 1 WHERE visitor_id = ?',
+                [visitorId]
+            );
+            newVisitor = isToday ? 0 : 1;
+        }
+        await pool.query(
+            `INSERT INTO daily_metrics (date, total_visitors, total_pageviews)
+             VALUES (CURDATE(), ?, 1)
+             ON DUPLICATE KEY UPDATE
+                total_visitors = total_visitors + ?,
+                total_pageviews = total_pageviews + 1`,
+            [newVisitor, newVisitor]
+        );
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ===== RESUMEN DE VISITAS (público, para el contador del pie) =====
+app.get('/api/visits/summary', async (req, res) => {
+    try {
+        const [totals] = await pool.query(
+            'SELECT COUNT(*) AS total_visitors, COALESCE(SUM(visit_count), 0) AS total_pageviews FROM site_visits'
+        );
+        const [today] = await pool.query(
+            'SELECT total_visitors, total_pageviews FROM daily_metrics WHERE date = CURDATE()'
+        );
+        res.json({
+            totalVisitors: totals[0]?.total_visitors || 0,
+            totalPageviews: totals[0]?.total_pageviews || 0,
+            todayVisitors: today[0]?.total_visitors || 0,
+            todayPageviews: today[0]?.total_pageviews || 0
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ===== SOLICITUDES DE NEGOCIOS (público) =====
+const VALID_SERVICE_CATEGORIES = ['hotel', 'restaurant', 'artisan', 'tour_guide', 'transportation'];
+
+// Subida pública de imagen para solicitudes de negocio
+const requestStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadDir = './uploads/requests';
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, 'request-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const requestUpload = multer({
+    storage: requestStorage,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = /jpeg|jpg|png|webp/;
+        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = allowedTypes.test(file.mimetype);
+        if (extname && mimetype) {
+            return cb(null, true);
+        }
+        cb(new Error('Solo se permiten imágenes (JPG, PNG, WEBP)'));
+    }
+});
+
+app.post('/api/service-requests/upload', requestUpload.single('image'), (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se subió ningún archivo' });
+        }
+        res.json({ success: true, url: `/uploads/requests/${req.file.filename}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/service-requests', async (req, res) => {
+    const { business_name, category, address, phone, email, website, description, owner_name, image_url } = req.body;
+    if (!business_name || !String(business_name).trim()) {
+        return res.status(400).json({ error: 'El nombre del negocio es obligatorio' });
+    }
+    if (!category || !VALID_SERVICE_CATEGORIES.includes(category)) {
+        return res.status(400).json({ error: 'Debes seleccionar una categoría válida' });
+    }
+    try {
+        const [result] = await pool.query(
+            `INSERT INTO service_requests (business_name, category, address, phone, email, website, description, owner_name, image_url)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [String(business_name).trim(), category, address || null, phone || null, email || null, website || null, description || null, owner_name || null, image_url || null]
+        );
+        res.status(201).json({ message: 'Solicitud enviada. El equipo la revisará próximamente.', id: result.insertId });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // ===== RUTAS DE AUTENTICACIÓN Y ADMIN =====
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/important-dates', importantDatesRoutes);
 app.use('/api/uploads', uploadsRoutes);
+app.use('/api/reviews', reviewsRoutes);
 
 // ============================================================
 //  INICIAR SERVIDOR

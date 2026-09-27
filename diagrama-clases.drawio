@@ -1,0 +1,167 @@
+<mxfile host="app.diagrams.net" agent="mozilla" modified="2026-09-09" etag="turismo-clases" version="26.0.0" type="device">
+  <diagram id="diagrama-clases" name="Clases">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ===== CLASE: Usuario ===== -->
+        <mxCell id="clsUsuario" value="Usuario" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="250" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsUsuarioAttrs" value="- id: Integer&#10;- nombreUsuario: String&#10;- email: String&#10;- passwordHash: String&#10;- nombreCompleto: String&#10;- rol: String&#10;- activo: Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsUsuario">
+          <mxGeometry y="28" width="250" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsUsuarioMethods" value="+ autenticar(): Boolean&#10;+ generarToken(): String&#10;+ cambiarRol(rol: String): void&#10;+ eliminarCuenta(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsUsuario">
+          <mxGeometry y="133" width="250" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Categoría ===== -->
+        <mxCell id="clsCategoria" value="Categoría" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="60" y="420" width="220" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsCategoriaAttrs" value="- id: Integer&#10;- nombre: String&#10;- icono: String&#10;- descripcion: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsCategoria">
+          <mxGeometry y="28" width="220" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsCategoriaMethods" value="+ listarLugares(): List&#10;+ estaCategoria(): Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsCategoria">
+          <mxGeometry y="83" width="220" height="42" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Lugar ===== -->
+        <mxCell id="clsLugar" value="Lugar" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#ffdccc;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="430" y="60" width="280" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsLugarAttrs" value="- id: Integer&#10;- nombre: String&#10;- descripcion: Text&#10;- latitud: Decimal&#10;- longitud: Decimal&#10;- direccion: String&#10;- telefono: String&#10;- horario: String&#10;- verificado: Boolean&#10;- creadoPorId: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsLugar">
+          <mxGeometry y="28" width="280" height="122" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsLugarMethods" value="+ obtenerDetalle(): Lugar&#10;+ estaVerificado(): Boolean&#10;+ calcularPromedioRating(): Decimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsLugar">
+          <mxGeometry y="150" width="280" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Imagen ===== -->
+        <mxCell id="clsImagen" value="Imagen" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="430" y="420" width="220" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsImagenAttrs" value="- id: Integer&#10;- url: String&#10;- caption: String&#10;- orden: Integer&#10;- lugarId: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsImagen">
+          <mxGeometry y="28" width="220" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsImagenMethods" value="+ obtenerUrl(): String&#10;+ obtenerGaleria(): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsImagen">
+          <mxGeometry y="93" width="220" height="34" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Reseña ===== -->
+        <mxCell id="clsResena" value="Reseña" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="830" y="60" width="260" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsResenaAttrs" value="- id: Integer&#10;- calificacion: Integer (1-5)&#10;- comentario: Text&#10;- fecha: Date&#10;- usuarioId: Integer&#10;- lugarId: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsResena">
+          <mxGeometry y="28" width="260" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsResenaMethods" value="+ publicar(): void&#10;+ esValida(): Boolean&#10;+ eliminar(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsResena">
+          <mxGeometry y="108" width="260" height="42" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Evento ===== -->
+        <mxCell id="clsEvento" value="Evento" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="60" width="280" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsEventoAttrs" value="- id: Integer&#10;- titulo: String&#10;- descripcion: Text&#10;- ubicacion: String&#10;- fechaInicio: Date&#10;- fechaFin: Date&#10;- destacado: Boolean&#10;- creadoPorId: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsEvento">
+          <mxGeometry y="28" width="280" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsEventoMethods" value="+ listarProximos(): List&#10;+ estaDestacado(): Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsEvento">
+          <mxGeometry y="108" width="280" height="42" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: ActividadCultural ===== -->
+        <mxCell id="clsActividad" value="ActividadCultural" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="270" width="280" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsActividadAttrs" value="- id: Integer&#10;- titulo: String&#10;- descripcion: Text&#10;- fecha: Date&#10;- categoria: String&#10;- recurrente: Boolean&#10;- activo: Boolean&#10;- creadoPorId: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsActividad">
+          <mxGeometry y="28" width="280" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsActividadMethods" value="+ listarActivas(): List&#10;+ esAnual(): Boolean&#10;+ filtrarPorCategoria(): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsActividad">
+          <mxGeometry y="108" width="280" height="42" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Servicio ===== -->
+        <mxCell id="clsServicio" value="Servicio" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="480" width="280" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsServicioAttrs" value="- id: Integer&#10;- nombre: String&#10;- direccion: String&#10;- telefono: String&#10;- email: String&#10;- logo: String&#10;- categoria: String&#10;- lugarAsociadoId: Integer&#10;- activo: Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsServicio">
+          <mxGeometry y="28" width="280" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsServicioMethods" value="+ obtenerServiciosPorCategoria(): List&#10;+ asociarLugar(): void&#10;+ calcularPromedioRating(): Decimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsServicio">
+          <mxGeometry y="128" width="280" height="42" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Configuración ===== -->
+        <mxCell id="clsConfig" value="Configuración" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="700" width="240" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsConfigAttrs" value="- id: Integer&#10;- clave: String&#10;- valor: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsConfig">
+          <mxGeometry y="28" width="240" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsConfigMethods" value="+ obtenerValor(): String&#10;+ actualizarValor(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsConfig">
+          <mxGeometry y="68" width="240" height="34" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CLASE: Reporte ===== -->
+        <mxCell id="clsReporte" value="Reporte" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="830" y="680" width="280" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsReporteAttrs" value="- periodo: String&#10;- totalSitios: Integer&#10;- totalUsuarios: Integer&#10;- totalEventos: Integer&#10;- totalResenas: Integer&#10;- visitasMensuales: List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsReporte">
+          <mxGeometry y="28" width="280" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="clsReporteMethods" value="+ generarResumen(): Reporte&#10;+ calcularTotales(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="clsReporte">
+          <mxGeometry y="90" width="280" height="34" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== RELACIONES ===== -->
+        <!-- Usuario 1..* publica Reseña -->
+        <mxCell id="r-usu-resena" value="publica" style="endArrow=block;endFill=0;startArrow=block;startFill=0;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsUsuario" target="clsResena">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Usuario 1..* crea Lugar -->
+        <mxCell id="r-usu-lugar" value="crea" style="endArrow=block;endFill=0;startArrow=block;startFill=0;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsUsuario" target="clsLugar">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Usuario 1..* crea Evento -->
+        <mxCell id="r-usu-evento" value="crea" style="endArrow=block;endFill=0;startArrow=block;startFill=0;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsUsuario" target="clsEvento">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Usuario 1..* crea ActividadCultural -->
+        <mxCell id="r-usu-actividad" value="crea" style="endArrow=block;endFill=0;startArrow=block;startFill=0;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsUsuario" target="clsActividad">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Categoría 1 clasifica 0..* Lugar -->
+        <mxCell id="r-cat-lugar" value="clasifica" style="endArrow=block;endFill=0;startArrow=block;startFill=0;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsCategoria" target="clsLugar">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Lugar 1 tiene 0..* Imagen (composición) -->
+        <mxCell id="r-lugar-imagen" value="tiene" style="endArrow=block;endFill=0;startArrow=diamondThin;startFill=1;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsLugar" target="clsImagen">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Lugar 1 recibe 0..* Reseña -->
+        <mxCell id="r-lugar-resena" value="recibe" style="endArrow=block;endFill=0;startArrow=block;startFill=0;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsLugar" target="clsResena">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Lugar 1 asociado a 0..* Servicio -->
+        <mxCell id="r-lugar-servicio" value="asocia" style="endArrow=block;endFill=0;startArrow=block;startFill=0;html=1;startLabel=1;endLabel=0..*;fontSize=11;" edge="1" parent="1" source="clsLugar" target="clsServicio">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Reporte depende de Lugar, Usuario, Evento, Reseña -->
+        <mxCell id="d-rep-lugar" value="«usa»" style="dashed=1;endArrow=open;endFill=0;html=1;fontSize=11;" edge="1" parent="1" source="clsReporte" target="clsLugar">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-rep-usuario" value="«usa»" style="dashed=1;endArrow=open;endFill=0;html=1;fontSize=11;" edge="1" parent="1" source="clsReporte" target="clsUsuario">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-rep-evento" value="«usa»" style="dashed=1;endArrow=open;endFill=0;html=1;fontSize=11;" edge="1" parent="1" source="clsReporte" target="clsEvento">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-rep-resena" value="«usa»" style="dashed=1;endArrow=open;endFill=0;html=1;fontSize=11;" edge="1" parent="1" source="clsReporte" target="clsResena">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

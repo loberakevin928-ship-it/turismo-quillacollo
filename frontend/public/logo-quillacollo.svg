@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="15" fill="#0B0B0B"/>
+  <circle cx="46" cy="17" r="5" fill="#38BDF8"/>
+  <text x="32" y="45" font-family="'Poppins','Segoe UI',Arial,sans-serif" font-size="32" font-weight="800" fill="#FFFFFF" text-anchor="middle">Q</text>
+  <path d="M20 53 L44 53" stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

@@ -9,18 +9,18 @@ const useLogo = () => {
         const fetchLogo = async () => {
             try {
                 const res = await api.get('/settings/logo');
-                if (res.data.logoUrl) {
-                    const url = res.data.logoUrl.startsWith('http') 
-                        ? res.data.logoUrl 
-                        : `http://localhost:5000${res.data.logoUrl}`;
-                    setLogoSrc(url);
-                } else {
-                    setLogoSrc('https://via.placeholder.com/200x80/8B4513/FFFFFF?text=Quillacollo');
-                }
-            } catch (error) {
-                console.error('Error cargando logo:', error);
-                setLogoSrc('https://via.placeholder.com/200x80/8B4513/FFFFFF?text=Quillacollo');
-            } finally {
+if (res.data.logoUrl) {
+                        const url = res.data.logoUrl.startsWith('http')
+                            ? res.data.logoUrl
+                            : `http://localhost:5000${res.data.logoUrl}`;
+                        setLogoSrc(url);
+                    } else {
+                        setLogoSrc(null);
+                    }
+                } catch (error) {
+                    console.error('Error cargando logo:', error);
+                    setLogoSrc(null);
+                } finally {
                 setLoading(false);
             }
         };
